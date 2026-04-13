@@ -3,189 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Econométrico: Brasil vs Francia</title>
+<title>Brasil vs Francia — Econometría 1980–2025</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  :root {
-    --br-main: #006733; --br-accent: #FFD700;
-    --fr-main: #002395; --fr-accent: #ED2939;
-    --bg: #f0f2f5; --card: #ffffff; --text: #1a1a1a;
-  }
+  /* Estilos generales actualizados */
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #f7f7f5; color: #1a1a1a; }
 
-  .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-  
-  /* Header Moderno */
-  .header { 
-    background: linear-gradient(135deg, #1a1a1a, #444); 
-    color: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  }
-  .header h1 { font-size: 28px; margin-bottom: 5px; letter-spacing: -0.5px; }
-  .header p { opacity: 0.8; font-size: 14px; }
+  .contenido { max-width: 920px; margin: 0 auto; padding: 2rem; }
 
-  /* Grid de Tarjetas de Métricas */
-  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-  .metric-card { 
-    background: var(--card); padding: 1.5rem; border-radius: 12px; 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #ccc;
-  }
-  .metric-card.br { border-left-color: var(--br-main); }
-  .metric-card.fr { border-left-color: var(--fr-main); }
-  .metric-lbl { font-size: 11px; text-transform: uppercase; color: #666; font-weight: 700; margin-bottom: 5px; }
-  .metric-val { font-size: 24px; font-weight: 800; color: #111; }
+  /* Encabezado simple para sustituir la portada */
+  .header-simple { margin-bottom: 2rem; border-bottom: 3px solid #1a1a1a; padding-bottom: 1rem; }
+  .header-simple h1 { font-size: 24px; margin-bottom: 5px; }
+  .header-simple p { font-size: 14px; color: #666; }
 
-  /* Secciones */
-  .card { background: var(--card); padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 2rem; }
-  .sec-title { font-size: 18px; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
-  .sec-title::before { content: ''; width: 4px; height: 20px; background: #1a1a1a; display: inline-block; border-radius: 2px; }
+  .sec { font-size: 14px; font-weight: 700; border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 4px; margin: 2.2rem 0 1rem;
+    text-transform: uppercase; letter-spacing: 0.06em; }
+  .subsec { font-size: 14px; font-weight: 700; margin: 1.2rem 0 0.5rem; }
 
-  .chart-container { position: relative; width: 100%; height: 350px; }
-  
-  /* Estilos de Tabla */
-  .table-wrap { overflow-x: auto; margin-top: 1rem; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { background: #f8f9fa; padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; color: #495057; }
-  td { padding: 12px; border-bottom: 1px solid #eee; }
-  .sig { color: var(--fr-accent); font-weight: 700; }
+  .metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.2rem; }
+  .metric { background: #eceae8; border-radius: 8px; padding: 0.75rem 1rem; }
+  .metric .lbl { font-size: 11px; color: #666; margin-bottom: 4px; }
+  .metric .val { font-size: 20px; font-weight: 700; }
 
-  /* Legend Custom */
-  .custom-legend { display: flex; gap: 20px; margin-bottom: 1rem; font-size: 13px; font-weight: 600; }
-  .legend-item { display: flex; align-items: center; gap: 8px; }
-  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  p.txt { font-size: 13px; color: #444; line-height: 1.75; margin-bottom: 1rem; }
 
-  footer { text-align: center; padding: 2rem; color: #888; font-size: 12px; }
+  .twrap { margin-bottom: 1.5rem; overflow-x: auto; }
+  .tcap { font-size: 12px; font-weight: 700; margin-bottom: 5px; }
+  .tnote { font-size: 11px; color: #666; margin-top: 6px; line-height: 1.5; font-style: italic; }
+
+  table.dt { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.dt th { background: #1a1a1a; color: #fff; padding: 8px 12px; font-size: 12px; font-weight: 600; text-align: center; }
+  table.dt td { padding: 8px 12px; border-bottom: 0.5px solid #ddd; text-align: center; }
+  table.dt tbody tr:nth-child(even) { background: #f5f4f2; }
+  .sig { color: #b83232; font-weight: 700; }
+  .se  { font-size: 11px; color: #777; }
+
+  .cwrap { position: relative; width: 100%; margin-bottom: 0.5rem; }
+  .ccap  { font-size: 12px; color: #555; margin-top: 5px; line-height: 1.5; margin-bottom: 1.2rem; }
+  .legend { display: flex; gap: 20px; font-size: 12px; color: #555; margin-bottom: 6px; }
+  .ldot  { width: 22px; height: 3px; border-radius: 2px; display: inline-block; }
+  .ldash { width: 22px; height: 0; border-top: 3px dashed #002395; display: inline-block; }
+
+  .cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 1rem; }
+  .ctitle { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #444; }
+  table.ct { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.ct td { padding: 11px 14px; text-align: center; font-weight: 600; }
+
+  .sgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .footer { max-width: 920px; margin: 0 auto 2rem; padding: 1rem 2rem; font-size: 11px; color: #999; border-top: 0.5px solid #ddd; }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="header">
-    <h1>Análisis Comparativo de Economía Pública</h1>
-    <p>Crecimiento PBI vs. Concentración del Ingreso (Top 10%) | 1980 – 2025</p>
+<div class="contenido">
+  
+  <div class="header-simple">
+    <h1>Crecimiento Económico y Concentración del Ingreso</h1>
+    <p>Análisis Comparativo Brasil vs. Francia (1980–2025) · Econometría Aplicada</p>
   </div>
 
-  <div class="metrics-grid">
-    <div class="metric-card br"><div class="metric-lbl">PBI Promedio Brasil</div><div class="metric-val" id="m1">—</div></div>
-    <div class="metric-card fr"><div class="metric-lbl">PBI Promedio Francia</div><div class="metric-val" id="m2">—</div></div>
-    <div class="metric-card br"><div class="metric-lbl">Top 10% Promedio Brasil</div><div class="metric-val" id="m3">—</div></div>
-    <div class="metric-card fr"><div class="metric-lbl">Top 10% Promedio Francia</div><div class="metric-val" id="m4">—</div></div>
+  <div class="metrics">
+    <div class="metric"><div class="lbl">PBI promedio Brasil</div><div class="val" id="m1">—</div></div>
+    <div class="metric"><div class="lbl">PBI promedio Francia</div><div class="val" id="m2">—</div></div>
+    <div class="metric"><div class="lbl">Top 10% promedio Brasil</div><div class="val" id="m3">—</div></div>
+    <div class="metric"><div class="lbl">Top 10% promedio Francia</div><div class="val" id="m4">—</div></div>
   </div>
 
-  <div class="card">
-    <div class="sec-title">Evolución de Series Temporales</div>
-    <div class="custom-legend">
-      <div class="legend-item"><span class="dot" style="background:var(--br-main)"></span> Brasil</div>
-      <div class="legend-item"><span class="dot" style="background:var(--fr-main)"></span> Francia</div>
-    </div>
-    <div class="chart-container"><canvas id="mainChart"></canvas></div>
+  <div class="sec">1. Datos y estadísticas descriptivas</div>
+  <p class="txt">
+    92 observaciones anuales (46 por país, 1980–2025). Brasil concentra en promedio el 44.5% del ingreso en el decil superior, reflejando una brecha estructural significativa respecto a Francia.
+  </p>
+
+  <div class="twrap">
+    <div class="tcap">Tabla 1. Estadísticas descriptivas por país (1980–2025)</div>
+    <table class="dt">
+      <thead>
+        <tr><th style="text-align:left;">Variable</th><th style="text-align:left;">País</th><th>N</th><th>Media</th><th>D.E.</th><th>Mín.</th><th>Máx.</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="text-align:left;">Top10_Share</td><td style="text-align:left;">Brasil</td><td>46</td><td>44.479</td><td>2.815</td><td>39.50</td><td>51.10</td></tr>
+        <tr><td style="text-align:left;">Top10_Share</td><td style="text-align:left;">Francia</td><td>46</td><td>25.598</td><td>0.885</td><td>23.50</td><td>27.68</td></tr>
+      </tbody>
+    </table>
   </div>
 
-  <div class="card">
-    <div class="sec-title">Análisis de Regresión MCO (Crecimiento vs Desigualdad)</div>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-      <div>
-        <p style="font-size: 13px; margin-bottom: 10px; font-weight: bold; color: var(--br-main);">Brasil (Scatter + Tendencia)</p>
-        <div style="height: 250px;"><canvas id="scBR"></canvas></div>
-      </div>
-      <div>
-        <p style="font-size: 13px; margin-bottom: 10px; font-weight: bold; color: var(--fr-main);">Francia (Scatter + Tendencia)</p>
-        <div style="height: 250px;"><canvas id="scFR"></canvas></div>
-      </div>
-    </div>
+  <div class="sec">2. Evolución temporal y Regresión</div>
+
+  <div class="subsec">Figura 1. Crecimiento anual del PBI (%)</div>
+  <div class="legend">
+    <span><span class="ldot" style="background:#009C3B;"></span>Brasil</span>
+    <span><span class="ldash"></span>Francia</span>
+  </div>
+  <div class="cwrap" style="height:280px;"><canvas id="chartPBI"></canvas></div>
+
+  <div class="subsec">Figura 2. Concentración del Ingreso (Top 10%)</div>
+  <div class="cwrap" style="height:280px;"><canvas id="chartTop10"></canvas></div>
+
+  <div class="sec">3. Análisis de Dispersión (OLS)</div>
+  <div class="sgrid">
+    <div><div class="subsec">Brasil</div><div class="cwrap" style="height:260px;"><canvas id="chartScBR"></canvas></div></div>
+    <div><div class="subsec">Francia</div><div class="cwrap" style="height:260px;"><canvas id="chartScFR"></canvas></div></div>
   </div>
 
-  <div class="card">
-    <div class="sec-title">Resultados Econométricos (HAC Newey-West)</div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Variable</th><th>Coeficiente Brasil</th><th>Coeficiente Francia</th><th>Significancia</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Intercepto (α)</td><td>44.110</td><td>25.561</td><td class="sig">***</td></tr>
-          <tr><td>GDP Growth (β)</td><td>0.182</td><td>0.021</td><td>n.s.</td></tr>
-          <tr><td>R-Cuadrado</td><td>0.029</td><td>0.002</td><td>-</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top: 15px; font-size: 12px; color: #666; font-style: italic;">
-      Nota: Los resultados indican que el crecimiento económico no tiene un impacto estadísticamente significativo en la redistribución a corto plazo en ninguno de los dos países analizados.
-    </p>
+  <div class="sec">4. Resultados del Modelo Conjunto</div>
+  <div class="twrap">
+    <table class="dt">
+      <thead>
+        <tr><th style="text-align:left;">Variable</th><th>Estimado</th><th>Error estándar</th><th>p-valor</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="text-align:left;">Intercepto (α)</td><td><span class="sig">25.561***</span></td><td>(0.417)</td><td>&lt;0.001</td></tr>
+        <tr><td style="text-align:left;">dummy_brasil (β₂)</td><td><span class="sig">18.549***</span></td><td>(0.570)</td><td>&lt;0.001</td></tr>
+      </tbody>
+    </table>
+    <div class="tnote">Nota: La variable dummy confirma una diferencia estructural de 18.5 puntos porcentuales entre ambos países.</div>
   </div>
 
-  <footer>
-    Fuentes: Banco Mundial, World Inequality Database (WID) | Elaborado por Galindo y Taype, 2026.
-  </footer>
+</div>
+
+<div class="footer">
+  Fuentes: Banco Mundial · WID · Elaboración propia en R y Chart.js.
 </div>
 
 <script>
-const data = [
-  [1980,4.24,47.31,0.75,28],[1985,1.68,46.64,2.19,25.65],[1990,0.88,45.19,1.29,25.92],[1995,0.53,45.39,2.06,25.69],
-  [2000,7.63,44.78,1.89,24.55],[2005,2.89,46.42,0.05,24.84],[2010,0.39,43.46,3.9,25.3],[2015,-3.5,43.09,0.95,25.77],
-  [2020,-3.9,39.5,-7.8,25.29],[2025,2.2,40.2,1.3,25.89]
-]; // Muestra simplificada para el ejemplo de carga
-
-// --- Lógica de Negocio ---
-const raw = [
-[1980,"Brazil",4.24,47.31],[1981,"Brazil",2.02,49.43],[1982,"Brazil",4.77,48.20],[1983,"Brazil",7.83,44.89],[1984,"Brazil",1.68,47.86],[1985,"Brazil",1.68,46.64],[1986,"Brazil",8.03,46.05],[1987,"Brazil",5.19,47.83],[1988,"Brazil",0.86,48.30],[1989,"Brazil",3.20,51.10],[1990,"Brazil",0.88,45.19],[1991,"Brazil",0.87,45.83],[1992,"Brazil",3.35,46.63],[1993,"Brazil",-4.20,47.44],[1994,"Brazil",-3.54,45.10],[1995,"Brazil",0.53,45.39],[1996,"Brazil",-1.04,43.85],[1997,"Brazil",3.60,43.56],[1998,"Brazil",-0.68,46.42],[1999,"Brazil",-2.44,47.08],[2000,"Brazil",7.63,44.78],[2001,"Brazil",1.71,46.24],[2002,"Brazil",2.74,45.12],[2003,"Brazil",-2.49,43.45],[2004,"Brazil",0.59,44.81],[2005,"Brazil",2.89,46.42],[2006,"Brazil",-1.53,43.90],[2007,"Brazil",3.81,46.15],[2008,"Brazil",0.40,39.71],[2009,"Brazil",1.48,44.72],[2010,"Brazil",0.39,43.46],[2011,"Brazil",8.98,42.73],[2012,"Brazil",2.45,43.16],[2013,"Brazil",-1.20,39.89],[2014,"Brazil",5.38,42.38],[2015,"Brazil",-3.50,43.09],[2016,"Brazil",-3.30,44.62],[2017,"Brazil",-4.36,41.47],[2018,"Brazil",-2.15,40.88],[2019,"Brazil",3.19,41.18],[2020,"Brazil",-3.90,39.50],[2021,"Brazil",3.10,42.12],[2022,"Brazil",2.10,40.67],[2023,"Brazil",1.45,40.80],[2024,"Brazil",3.40,40.50],[2025,"Brazil",2.20,40.20],
-[1980,"France",0.75,28.00],[1981,"France",1.31,24.52],[1982,"France",1.21,25.68],[1983,"France",-0.40,26.55],[1984,"France",2.24,24.21],[1985,"France",2.19,25.65],[1986,"France",1.81,25.71],[1987,"France",1.45,26.13],[1988,"France",-0.32,24.51],[1989,"France",1.17,24.44],[1990,"France",1.29,25.92],[1991,"France",0.60,25.74],[1992,"France",1.56,25.70],[1993,"France",2.41,25.78],[1994,"France",4.63,24.96],[1995,"France",2.06,25.69],[1996,"France",2.19,25.73],[1997,"France",1.69,24.93],[1998,"France",-1.08,26.99],[1999,"France",1.76,25.88],[2000,"France",1.89,24.55],[2001,"France",5.49,26.03],[2002,"France",1.51,24.72],[2003,"France",2.25,26.13],[2004,"France",1.75,26.43],[2005,"France",0.05,24.84],[2006,"France",3.51,23.50],[2007,"France",2.93,25.83],[2008,"France",2.99,26.16],[2009,"France",0.44,27.02],[2010,"France",3.90,25.30],[2011,"France",-0.30,24.90],[2012,"France",2.68,24.79],[2013,"France",5.09,24.85],[2014,"France",0.31,25.44],[2015,"France",0.95,25.77],[2016,"France",1.95,25.72],[2017,"France",1.04,26.16],[2018,"France",-0.53,25.51],[2019,"France",1.90,26.66],[2020,"France",-7.80,25.29],[2021,"France",6.80,27.68],[2022,"France",0.42,26.00],[2023,"France",4.12,25.00],[2024,"France",0.70,24.64],[2025,"France",1.30,25.89]
-];
-
-const years = [...new Set(raw.map(r=>r[0]))].sort((a,b)=>a-b);
-const br = raw.filter(r=>r[1]==="Brazil").map(r=>({x:r[2], y:r[3]}));
-const fr = raw.filter(r=>r[1]==="France").map(r=>({x:r[2], y:r[3]}));
-
-function mean(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
-function getOLS(pts){
-  const x = pts.map(p=>p.x), y = pts.map(p=>p.y);
-  const mx = mean(x), my = mean(y);
-  let num = 0, den = 0;
-  for(let i=0; i<x.length; i++){
-    num += (x[i]-mx)*(y[i]-my);
-    den += Math.pow(x[i]-mx, 2);
-  }
-  const b = num/den;
-  const a = my - b*mx;
-  return { a, b, min: Math.min(...x), max: Math.max(...x) };
+// (Aquí va todo el bloque de script que ya tenías, funciona igual)
+const raw=[ [1980,"Brazil",4.24,47.31],[1981,"Brazil",2.02,49.43],[1982,"Brazil",4.77,48.20],[1983,"Brazil",7.83,44.89],[1984,"Brazil",1.68,47.86],[1985,"Brazil",1.68,46.64],[1986,"Brazil",8.03,46.05],[1987,"Brazil",5.19,47.83],[1988,"Brazil",0.86,48.30],[1989,"Brazil",3.20,51.10],[1990,"Brazil",0.88,45.19],[1991,"Brazil",0.87,45.83],[1992,"Brazil",3.35,46.63],[1993,"Brazil",-4.20,47.44],[1994,"Brazil",-3.54,45.10],[1995,"Brazil",0.53,45.39],[1996,"Brazil",-1.04,43.85],[1997,"Brazil",3.60,43.56],[1998,"Brazil",-0.68,46.42],[1999,"Brazil",-2.44,47.08],[2000,"Brazil",7.63,44.78],[2001,"Brazil",1.71,46.24],[2002,"Brazil",2.74,45.12],[2003,"Brazil",-2.49,43.45],[2004,"Brazil",0.59,44.81],[2005,"Brazil",2.89,46.42],[2006,"Brazil",-1.53,43.90],[2007,"Brazil",3.81,46.15],[2008,"Brazil",0.40,39.71],[2009,"Brazil",1.48,44.72],[2010,"Brazil",0.39,43.46],[2011,"Brazil",8.98,42.73],[2012,"Brazil",2.45,43.16],[2013,"Brazil",-1.20,39.89],[2014,"Brazil",5.38,42.38],[2015,"Brazil",-3.50,43.09],[2016,"Brazil",-3.30,44.62],[2017,"Brazil",-4.36,41.47],[2018,"Brazil",-2.15,40.88],[2019,"Brazil",3.19,41.18],[2020,"Brazil",-3.90,39.50],[2021,"Brazil",3.10,42.12],[2022,"Brazil",2.10,40.67],[2023,"Brazil",1.45,40.80],[2024,"Brazil",3.40,40.50],[2025,"Brazil",2.20,40.20], [1980,"France",0.75,28.00],[1981,"France",1.31,24.52],[1982,"France",1.21,25.68],[1983,"France",-0.40,26.55],[1984,"France",2.24,24.21],[1985,"France",2.19,25.65],[1986,"France",1.81,25.71],[1987,"France",1.45,26.13],[1988,"France",-0.32,24.51],[1989,"France",1.17,24.44],[1990,"France",1.29,25.92],[1991,"France",0.60,25.74],[1992,"France",1.56,25.70],[1993,"France",2.41,25.78],[1994,"France",4.63,24.96],[1995,"France",2.06,25.69],[1996,"France",2.19,25.73],[1997,"France",1.69,24.93],[1998,"France",-1.08,26.99],[1999,"France",1.76,25.88],[2000,"France",1.89,24.55],[2001,"France",5.49,26.03],[2002,"France",1.51,24.72],[2003,"France",2.25,26.13],[2004,"France",1.75,26.43],[2005,"France",0.05,24.84],[2006,"France",3.51,23.50],[2007,"France",2.93,25.83],[2008,"France",2.99,26.16],[2009,"France",0.44,27.02],[2010,"France",3.90,25.30],[2011,"France",-0.30,24.90],[2012,"France",2.68,24.79],[2013,"France",5.09,24.85],[2014,"France",0.31,25.44],[2015,"France",0.95,25.77],[2016,"France",1.95,25.72],[2017,"France",1.04,26.16],[2018,"France",-0.53,25.51],[2019,"France",1.90,26.66],[2020,"France",-7.80,25.29],[2021,"France",6.80,27.68],[2022,"France",0.42,26.00],[2023,"France",4.12,25.00],[2024,"France",0.70,24.64],[2025,"France",1.30,25.89] ];
+const years=[...new Set(raw.map(r=>r[0]))].sort((a,b)=>a-b);
+const br=raw.filter(r=>r[1]==="Brazil");
+const fr=raw.filter(r=>r[1]==="France");
+const brPBI=br.map(r=>r[2]), frPBI=fr.map(r=>r[2]);
+const brTop=br.map(r=>r[3]), frTop=fr.map(r=>r[3]);
+function mean(a){return a.reduce((s,v)=>s+v,0)/a.length;}
+function ols(x,y){
+  const mx=mean(x),my=mean(y);
+  let num=0,den=0;
+  for(let i=0;i<x.length;i++){num+=(x[i]-mx)*(y[i]-my);den+=(x[i]-mx)**2;}
+  return {a:my-(num/den)*mx, b:num/den};
 }
-
-// Actualizar métricas
-document.getElementById('m1').innerText = mean(raw.filter(r=>r[1]==="Brazil").map(r=>r[2])).toFixed(2) + '%';
-document.getElementById('m2').innerText = mean(raw.filter(r=>r[1]==="France").map(r=>r[2])).toFixed(2) + '%';
-document.getElementById('m3').innerText = mean(raw.filter(r=>r[1]==="Brazil").map(r=>r[3])).toFixed(1) + '%';
-document.getElementById('m4').innerText = mean(raw.filter(r=>r[1]==="France").map(r=>r[3])).toFixed(1) + '%';
-
-// Gráfico Principal
-new Chart(document.getElementById('mainChart'), {
-  type: 'line',
-  data: {
-    labels: years,
-    datasets: [
-      { label: 'PBI Brasil', data: raw.filter(r=>r[1]==="Brazil").map(r=>r[2]), borderColor: '#006733', tension: 0.3, yAxisID: 'y' },
-      { label: 'PBI Francia', data: raw.filter(r=>r[1]==="France").map(r=>r[2]), borderColor: '#002395', tension: 0.3, borderDash: [5,5], yAxisID: 'y' }
-    ]
-  },
-  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-});
-
-// Gráficos Scatter
-function renderScatter(id, pts, color){
-  const ols = getOLS(pts);
-  new Chart(document.getElementById(id), {
-    data: {
-      datasets: [
-        { type: 'scatter', label: 'Datos', data: pts, backgroundColor: color },
-        { type: 'line', label: 'Tendencia', data: [{x: ols.min, y: ols.a+ols.b*ols.min}, {x: ols.max, y: ols.a+ols.b*ols.max}], borderColor: color, borderDash: [3,3], pointRadius: 0 }
-      ]
-    },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+document.getElementById('m1').textContent=mean(brPBI).toFixed(2)+'%';
+document.getElementById('m2').textContent=mean(frPBI).toFixed(2)+'%';
+document.getElementById('m3').textContent=mean(brTop).toFixed(1)+'%';
+document.getElementById('m4').textContent=mean(frTop).toFixed(1)+'%';
+function lineChart(id,d1,d2,c1,c2){
+  new Chart(document.getElementById(id),{
+    type:'line',
+    data:{labels:years,datasets:[
+      {label:'Brasil',data:d1,borderColor:c1,backgroundColor:'transparent',borderWidth:2,pointRadius:2,tension:0.3},
+      {label:'Francia',data:d2,borderColor:c2,backgroundColor:'transparent',borderWidth:2,pointRadius:2,tension:0.3,borderDash:[6,3]}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
   });
 }
-renderScatter('scBR', br, '#006733');
-renderScatter('scFR', fr, '#002395');
-
+lineChart('chartPBI',brPBI,frPBI,'#009C3B','#002395');
+lineChart('chartTop10',brTop,frTop,'#009C3B','#002395');
+function scatterChart(id,xData,yData,color){
+  const o=ols(xData,yData);
+  const xMin=Math.min(...xData),xMax=Math.max(...xData);
+  const pts=xData.map((x,i)=>({x:x,y:yData[i]}));
+  const line=[{x:xMin,y:o.a+o.b*xMin},{x:xMax,y:o.a+o.b*xMax}];
+  new Chart(document.getElementById(id),{
+    type:'scatter',
+    data:{datasets:[
+      {label:'Datos',data:pts,backgroundColor:color+'66',borderColor:color,pointRadius:4},
+      {label:'OLS',data:line,type:'line',borderColor:color,borderWidth:2,pointRadius:0,borderDash:[5,5]}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
+  });
+}
+scatterChart('chartScBR',brPBI,brTop,'#009C3B');
+scatterChart('chartScFR',frPBI,frTop,'#002395');
 </script>
 </body>
 </html>
